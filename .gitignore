@@ -3,3 +3,9 @@ ponavljanje.py
 
 .DS_Store
 __pycache__
+
+*.xml
+*.prototxt
+*.caffemodel
+*.jpg
+*.png
