@@ -11,16 +11,19 @@ import os
 import cv2
 import numpy
 
-if not os.path.exists("m3_05_foto/OpenCV/Rezultat"):
-    os.makedirs("m3_05_foto/OpenCV/Rezultat")
+folder_za_rezultat = "m3_05_foto/OpenCV/Rezultat"
+folder_za_fotografije = "m3_05_foto/Fotografije"
+ime_fotografije = "Algebra_greyp.jpg"
+putanja_fotografije = f"{folder_za_fotografije}/{ime_fotografije}"
+putanja_prototxt = "m3_05_foto/OpenCV/deploy.prototxt"
+putanja_modela = "m3_05_foto/OpenCV/weights.caffemodel"
 
-putanja_fotografije = "m3_05_foto/Fotografije/Algebra_greyp.jpg"
+if not os.path.exists(folder_za_rezultat):
+    os.makedirs(folder_za_rezultat)
+
 fotografija = cv2.imread(putanja_fotografije)
 
-model = cv2.dnn.readNetFromCaffe(
-    "m3_05_foto/OpenCV/deploy.prototxt", "m3_05_foto/OpenCV/weights.caffemodel"
-)
-
+model = cv2.dnn.readNetFromCaffe(putanja_prototxt, putanja_modela)
 
 resizana = cv2.resize(fotografija, (300, 300))
 blob_slika = cv2.dnn.blobFromImage(resizana, 1.0, (300, 300), (104.0, 177.0, 123.0))
@@ -29,7 +32,7 @@ model.setInput(blob_slika)
 detektirana_lica = model.forward()
 
 
-# Preuzmimo prve dvije vrijednosti iz shape liste vezane uz sliku: sirinu i visinu i pohtranimo ih u tuple
+# Preuzmimo prve dvije vrijednosti iz shape liste vezane uz sliku: sirinu i visinu i pohranimo ih u tuple
 (height, width) = fotografija.shape[:2]
 
 # Sada kada imamo prepoznavanje, prodimo kroz listu i oznacimo ih na fotografiji
@@ -48,7 +51,7 @@ for i in range(0, detektirana_lica.shape[2]):
 
 
 # Dobivenu fotografiju mozemo pohraniti na disk
-cv2.imwrite("Rezultat/" + fotografija, fotografija)
+cv2.imwrite(f"{folder_za_rezultat}/{ime_fotografije}", fotografija)
 
 # A mozemo i prikazati u zasebnom okviru uz dodatak "cekanja" da se okvir ne bi odmah zatvorio
 cv2.imshow("Pronadena lica", fotografija)
