@@ -7,9 +7,9 @@ NASLOV              SQLite ORM i SQLAlchemy
 
 import sqlalchemy as db
 
+CONN_STR = "sqlite:///m3_06_baze_podataka/CompanyDB.db"
 
 # za spajanje na bazu koristimo "engine"
-CONN_STR = "sqlite:///m03_06_baze_podataka/CompanyDB.db"
 db_engine = db.create_engine(CONN_STR)
 db_connection = db_engine.connect()
 db_metadata = db.MetaData()
@@ -28,7 +28,7 @@ ResultSet = ResultProxy.fetchall()
 
 # U slucaju da imamo jako puno podataka mozemo dohvatiti samo njih 20.
 # Umjesto fetchall() koristimo .fetchmany(20) i damo broj koliko redaka zelimo
-PartialResultSet = ResultProxy.fetchmany(20)
+# PartialResultSet = ResultProxy.fetchmany(20)
 
 # Procitajmo jedan po jedan objekt
 for result in ResultSet:
