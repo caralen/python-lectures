@@ -79,6 +79,19 @@ def get_knjige_po_izdavacu(session):
 # Dohvati listu izdavaca te broj autora cije knjige su izdali
 
 
+def get_autore_po_izdavacu(session):
+    """Dohvati listu izdavaca te broj autora cije knjige su izdali"""
+    return (
+        session.query(
+            Izdavac.naziv,
+            db.func.count(Autor.ime).label("ukupno_autora"),
+        )
+        .join(Izdavac.autori)
+        .group_by(Izdavac.naziv)
+        .order_by(db.desc("ukupno_autora"))
+    )
+
+
 def get_autori(session):
     """Dohvati listu autora sortiranih po prezimenu"""
     return session.query(Autor).order_by(Autor.prezime).all()
@@ -150,6 +163,10 @@ def main():
     # DZ
     # TODO
     # dohvati broj autora po svakom izdavacu
+    autori_po_izdavacu = get_autore_po_izdavacu(session)
+    for row in autori_po_izdavacu:
+        print(f"Izdavac: {row.naziv}, ukupno autora: {row.ukupno_autora}")
+    print()
 
     add_knjiga(
         session,
