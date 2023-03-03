@@ -31,7 +31,12 @@ def set_duzina_lozinke(value):
 
 
 def set_prikaz_lozinke():
-    if prikazi_lozinku == "prikazi":
+    # falio mi je .get() pa sam usporedivao prikazi_lozinku varijablu
+    # (koja je objekt tk.StringVar klase) sa stringom "prikazi" pa
+    # to nikad nece biti jednako i uvijek biti False i uvijek ce zavrsiti u else uvjetu
+    # potrebno je napraviti .get() da bi dobili primitivni tip string iz prikazi_lozinku objekta
+    # zato nije radilo kada se stisne na prikazi radio button
+    if prikazi_lozinku.get() == "prikazi":
         ent_lozinka.config(show="")
     else:
         ent_lozinka.config(show="*")
@@ -39,19 +44,25 @@ def set_prikaz_lozinke():
 
 def generiraj_lozinku():
     broj_znakova = duzina_lozinke.get()
+    choices = []
     lozinka = ""
 
     for znak in range(broj_znakova):
         if slova_var.get():
-            kompleksnost = random.choice([(65, 90), (97, 122)])
-        elif brojevi_var.get():
-            kompleksnost = random.choice([(48, 57)])
-        elif spec_znakovi_var.get():
-            kompleksnost = random.choice([(33, 47), (58, 64), (91, 96)])
-        else:
-            kompleksnost = random.choice([(33, 122)])
+            choices += [(65, 90), (97, 122)]
+        if brojevi_var.get():
+            choices += [(48, 57)]
+        if spec_znakovi_var.get():
+            choices += [(33, 47), (58, 64), (91, 96)]
+        # ako niti jedan checkbox nije stisnut, onda ce biti prazna lista
+        # (zato provjera if not choices)
+        # pa cemo stavit da cijeli raspon uzme, odnosno sve moguce znakove
+        if not choices:
+            choices += [(33, 122)]
 
-        random_broj = random.randint(*kompleksnost)
+        odabir_raspona = random.choice(choices)
+        pocetak, kraj = odabir_raspona
+        random_broj = random.randint(pocetak, kraj)
         znak = chr(random_broj)
         lozinka += znak
 
