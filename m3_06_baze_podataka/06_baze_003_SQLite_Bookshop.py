@@ -127,7 +127,6 @@ def add_knjiga(session, ime_autora, prezime_autora, naslov_knjige, naziv_izdavac
     # ako nema takvog autora, stvorimo ga
     if autor is None:
         autor = Autor(ime=ime_autora, prezime=prezime_autora)
-        session.add(autor)
 
     izdavac = (
         session.query(Izdavac).filter(Izdavac.naziv == naziv_izdavaca).one_or_none()
@@ -139,6 +138,15 @@ def add_knjiga(session, ime_autora, prezime_autora, naslov_knjige, naziv_izdavac
 
     # podesimo relacije izmedu knige i autora i izdavaca
     knjiga.autor = autor
+
+    # ***************************************************
+    # ovaj dio je falio, nije se nikad dodao novi izdavac u
+    # listu izdavaci u klasi autor
+    autor.izdavaci.append(izdavac)
+    # prebacio sam i ovaj session.add(autor) odozgo ovdje
+    session.add(autor)
+    # ***************************************************
+
     knjiga.izdavaci.append(izdavac)
     session.add(knjiga)
 
@@ -164,6 +172,7 @@ def main():
     # TODO
     # dohvati broj autora po svakom izdavacu
     autori_po_izdavacu = get_autore_po_izdavacu(session)
+    # print("autori_po_izdavacu", autori_po_izdavacu)
     for row in autori_po_izdavacu:
         print(f"Izdavac: {row.naziv}, ukupno autora: {row.ukupno_autora}")
     print()
