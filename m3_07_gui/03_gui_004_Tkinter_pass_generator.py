@@ -79,32 +79,28 @@ def kopiraj_lozinku():
 
 
 # ELEMENTI GUI-A
-frm_postavke = tk.Frame(root).grid(column=0, columnspan=3, row=0, rowspan=3)
-
-lbl_frm_postavke = tk.LabelFrame(frm_postavke, text="Postavke")
+lbl_frm_postavke = tk.LabelFrame(root, text="Postavke")
 lbl_frm_postavke.columnconfigure((0, 1, 2), weight=1, minsize=90)
 lbl_frm_postavke.grid(column=0, columnspan=3, row=0, padx=10, pady=10)
 
 # -- -- Checkbox
-ch_box_slova = tk.Checkbutton(lbl_frm_postavke, text="Slova", variable=slova_var).grid(
-    column=0, row=0
+tk.Checkbutton(lbl_frm_postavke, text="Slova", variable=slova_var).grid(column=0, row=0)
+tk.Checkbutton(lbl_frm_postavke, text="Brojevi", variable=brojevi_var).grid(
+    column=1, row=0
 )
-ch_box_brojevi = tk.Checkbutton(
-    lbl_frm_postavke, text="Brojevi", variable=brojevi_var
-).grid(column=1, row=0)
-ch_box_spec_znakovi = tk.Checkbutton(
+tk.Checkbutton(
     lbl_frm_postavke, text="Posebni znakovi", variable=spec_znakovi_var
 ).grid(column=2, row=0)
 
 # -- -- Radiobuttons
-rb_prikazi_lozinku = tk.Radiobutton(
+tk.Radiobutton(
     lbl_frm_postavke,
     text="Prikazi generiranu lozinku",
     variable=prikazi_lozinku,
     value="prikazi",
     command=set_prikaz_lozinke,
 ).grid(column=0, row=1)
-rb_sakrij_lozinku = tk.Radiobutton(
+tk.Radiobutton(
     lbl_frm_postavke,
     text="Sakrij generiranu lozinku",
     variable=prikazi_lozinku,
@@ -113,7 +109,7 @@ rb_sakrij_lozinku = tk.Radiobutton(
 ).grid(column=2, row=1)
 
 # -- -- Klizac za duzinu lozinke
-klizac_duzina = tk.Scale(
+tk.Scale(
     lbl_frm_postavke,
     orient="horizontal",
     variable=duzina_lozinke,
@@ -121,13 +117,11 @@ klizac_duzina = tk.Scale(
     from_=8,
     to=40,
     command=set_duzina_lozinke,
-)
-klizac_duzina.grid(column=0, columnspan=3, row=2)
+).grid(column=0, columnspan=3, row=2)
 
 # Gumbi
-frm_action_butttons = tk.Frame(root).grid(
-    column=0, columnspan=3, row=3, padx=10, pady=10
-)
+frm_action_butttons = tk.Frame(root)
+frm_action_butttons.grid(column=0, columnspan=3, row=3, padx=10, pady=10)
 
 btn_generiraj = tk.Button(
     frm_action_butttons, text="Generiraj lozinku", command=generiraj_lozinku
@@ -146,9 +140,8 @@ btn_resetiraj.grid(column=2, row=3)
 
 
 # Label Display
-frm_display_gen_pass = tk.Frame(root).grid(
-    column=0, columnspan=3, row=4, rowspan=2, padx=10, pady=10
-)
+frm_display_gen_pass = tk.Frame(root)
+frm_display_gen_pass.grid(column=0, columnspan=3, row=4, rowspan=2, padx=10, pady=10)
 lbl_pass = tk.Label(
     frm_display_gen_pass, text="Generirana lozinka", font=("Segoe UI", 14)
 )
